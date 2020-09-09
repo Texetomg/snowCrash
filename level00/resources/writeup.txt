@@ -1,0 +1,19 @@
+- Для начала необходимо найти все файлы, которые принадлежат пользователю flag00, все ошибки ввывода перенаправляем в /dev/null.
+
+`find / -user flag00 2>/dev/null`
+Результат:
+/usr/sbin/john
+/rofs/usr/sbin/john
+
+`cat /usr/sbin/john` или `cat /rofs/usr/sbin/john`
+Результат:
+cdiiddwpgswtgt
+
+- Данный пароль не работает, попробуем расшифровать его с помощью ROT алгоритма на сайте - 'https://www.dcode.fr/rot-cipher'.
+ROT15 выводит следующий результат 'NOTTOOHARDHERE'. Совпадение? Не думаю.
+
+Выполняем следующие команды по очереди:
+`su flag00`
+`nottoohardhere`
+`getflag`
+Check flag.Here is your token : x24ti5gi3x0ol2eh4esiuxias
