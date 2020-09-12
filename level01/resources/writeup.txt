@@ -1,0 +1,11 @@
+- В папке etc заглянем в файл passwd 
+  cat /etc/passwd | grep flag01
+- Получем хеш пароля. Для восстановления слабых паролей нам подойдет Johnthe ripper. На маке можно установить саму программу, на винде ставим kali 
+- Находясь в kali копируем файл с паролями с виртуалки snowcrash
+  scp -P 4242 level00@192.168.1.102:/etc/passwd .
+- Запускаем Джона, получаем пароль (abcdefg)
+  sudo john -user=flag01 ./passwd
+- Возвращаемся к машине snowcrash
+  su flag01
+  abcdefg
+  getflag
